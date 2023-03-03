@@ -5,7 +5,7 @@
 *TODO:
 *  - Naučit to Péťu
 *
-*  - Minimal Requirements 
+*   Minimal Requirements 
 *
 *  - App is running on real mobile device (not on virtual simulator) 
 *
@@ -37,5 +37,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#4A463F' 
   },
 });
