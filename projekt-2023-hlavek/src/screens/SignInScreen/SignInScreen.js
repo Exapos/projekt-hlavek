@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
       maxWidth: 400,
       maxHeight: 700,
       fontSize: 36,
-      fontWeight: 'semi-bold',
+      fontWeight: 'medium',
       textAlign: 'center',
       color: "white"
     },
