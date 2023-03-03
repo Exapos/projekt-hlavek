@@ -70,6 +70,10 @@ const styles = StyleSheet.create({
       fontWeight: 'medium',
       textAlign: 'center',
       color: "white",
+<<<<<<< HEAD
+=======
+      marginTop: 30
+>>>>>>> origin/master
     },
     root: {
       alignItems: 'center',
