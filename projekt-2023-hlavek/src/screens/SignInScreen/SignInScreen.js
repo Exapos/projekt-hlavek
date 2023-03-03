@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
       fontSize: 36,
       fontWeight: 'medium',
       textAlign: 'center',
-      color: "white"
+      color: "white",
+      marginTop: 30
     },
     root: {
       alignItems: 'center',
