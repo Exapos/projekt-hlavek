@@ -4,10 +4,9 @@ import React, {useState} from 'react'
 import  CustomButton  from "../../components/CustomButton/CustomButton";
 
 const SignInScreen = () => {
+
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  
-  onSignUpPressed
+  const [password, setPassword] = useState('');  
   
   const onSignUpPressed = () => {
   console.warn("Sign up!")
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
       fontSize: 36,
       fontWeight: 'medium',
       textAlign: 'center',
-      color: "white"
+      color: "white",
     },
     root: {
       alignItems: 'center',
