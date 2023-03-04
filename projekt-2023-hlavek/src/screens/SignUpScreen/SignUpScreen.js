@@ -114,7 +114,7 @@ const SignUpScreen = () => {
           onPress={handleSubmit(onRegisteredPressed)}
         />
 
-        <Text style={styles.text}>Zegistrovaním, souhlasíš s mými <Text style={styles.link}>podmínkami</Text>, které <Text style={styles.link}>nejsou</Text> nikde k nalezení.</Text>
+        <Text style={styles.text}>Zaregistovaním, souhlasíš s našimi <Text style={styles.link}>podmínkami</Text>, které <Text style={styles.link}>nejsou</Text> nikde k nalezení.</Text>
 
         <CustomButton
           text="Máš účet? Přihlaš se"

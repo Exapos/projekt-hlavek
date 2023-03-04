@@ -1,6 +1,6 @@
 import { View, Text, useWindowDimensions, StyleSheet, ScrollView, TextInput, Alert } from 'react-native'
 import CustomInput from '../../components/CustomInput/CustomInput'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
@@ -10,16 +10,39 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebas
 const auth = getAuth();
 
 const SignInScreen = () => {
+  const [showText, setShowText] = useState(false);
+  const [showText2, setShowText2] = useState(false);
+  
+  const [currentUser, setCurrentUser] = useState(null);
 
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
 
   const { control, handleSubmit, formState: { errors }, } = useForm();
-  
-  const onHandleSignIn = (email, password) => {  
-    signInWithEmailAndPassword(auth, email, password)
-    .then(()=> console.log("Login succes"))
-    .catch((err)=> Alert.alert("Login error", err.message));
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return unsubscribe;
+  }, []);
+
+  const onHandleSignIn = async (email, password) => {  
+    if (currentUser && !currentUser.emailVerified) {
+      console.log("Nejsi verified")
+      setShowText2(true);        
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("Login success");
+      setShowText(false)
+      setShowText2(false);
+    } catch (err) {
+      console.log(err);
+      setShowText(true);
+    }
   }
 
   const onSignUpPressed = () => {
@@ -28,13 +51,7 @@ const SignInScreen = () => {
   }
 
   const onSignInPressed = (data) => {
-    console.log(data);
-    console.log(data.email)
-    console.log(data.password)
-    console.warn("Sign in")
-    //validate
     onHandleSignIn(data.email, data.password)
-    // navigation.navigate('SignIn')  || PŘEJDE DO APLIKACE
   }
 
   const onForgotPasswordPressed = () => {
@@ -46,7 +63,9 @@ const SignInScreen = () => {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
         <Text style={[styles.banner, { height: height * 0.2 }]}>Vítej neznámý uživateli!</Text>
-
+        {showText && <Text style={styles.err}>Neplatné přihlašovací údaje. Zkuste to prosím znovu.</Text>}
+        {showText2 && <Text style={styles.err}>Učet nebyl ověřený, ověř si učet a přihlaš se! :)</Text>}
+        
         <CustomInput
           name="email"
           placeholder="E-mail"
@@ -110,7 +129,12 @@ const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     padding: 20,
-  }
+  },
+  err:{
+    fontSize: 24,
+    color: "red",
+    textAlign: 'center',   
+  },
 });
 
 export default SignInScreen

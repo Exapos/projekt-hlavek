@@ -15,7 +15,7 @@
 *
 *  - App has button to save inputs into local database storage 
 *
-*  - App on one view you shoul present records from local database 
+*  - App on one view you should present records from local database 
 */
 
 import { StyleSheet, Text, SafeAreaView } from 'react-native';
