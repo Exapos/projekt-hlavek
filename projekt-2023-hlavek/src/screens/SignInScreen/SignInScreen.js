@@ -5,7 +5,7 @@ import  CustomButton  from "../../components/CustomButton/CustomButton";
 
 const SignInScreen = () => {
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');  
   
   const onSignUpPressed = () => {
@@ -23,14 +23,14 @@ const SignInScreen = () => {
   const {height} = useWindowDimensions();
   
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
         <Text style={[styles.banner, {height: height * 0.2}]}>Vítej neznámý uživateli!</Text>
         
         <CustomInput
-          placeholder="Přihlašovací udaje"
-          value={username}
-          setValue={setUsername}
+          placeholder="E-mail"
+          value={email}
+          setValue={setEmail}
         />
         
         <CustomInput
@@ -70,10 +70,7 @@ const styles = StyleSheet.create({
       fontWeight: 'medium',
       textAlign: 'center',
       color: "white",
-<<<<<<< HEAD
-=======
-      marginTop: 30
->>>>>>> origin/master
+      marginTop: 100
     },
     root: {
       alignItems: 'center',
