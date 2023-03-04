@@ -4,19 +4,31 @@ import React, { useState } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import firebase from '../../Firebase/firebase';
 
+
+const auth = getAuth();
 
 
 const SignUpScreen = () => {
 
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const pwd = watch('password');
-  const navigation = useNavigation();
-
+  const navigation = useNavigation(); 
+  
+  const onHandleSignIn = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then(()=> console.log("SignUp succes"))
+    .catch((err)=> Alert.alert("Login error", err.message));
+  }
+  
+    
   const onRegisteredPressed = (data) => {
     console.warn(data)
     console.warn("Register")
     //Logika backendu
+    onHandleSignIn(data.email, data.password)
     navigation.navigate('ConfirmEmail')
   }
 
@@ -24,6 +36,7 @@ const SignUpScreen = () => {
     console.warn("Sign in")
     navigation.navigate('SignIn')
   }
+  
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>

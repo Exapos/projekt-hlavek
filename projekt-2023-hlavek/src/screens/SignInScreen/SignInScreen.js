@@ -1,9 +1,13 @@
-import { View, Text, useWindowDimensions, StyleSheet, ScrollView, TextInput } from 'react-native'
+import { View, Text, useWindowDimensions, StyleSheet, ScrollView, TextInput, Alert } from 'react-native'
 import CustomInput from '../../components/CustomInput/CustomInput'
 import React, { useState } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
+import firebase from '../../Firebase/firebase';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+
+const auth = getAuth();
 
 const SignInScreen = () => {
 
@@ -11,6 +15,12 @@ const SignInScreen = () => {
   const navigation = useNavigation();
 
   const { control, handleSubmit, formState: { errors }, } = useForm();
+  
+  const onHandleSignIn = (email, password) => {  
+    signInWithEmailAndPassword(auth, email, password)
+    .then(()=> console.log("Login succes"))
+    .catch((err)=> Alert.alert("Login error", err.message));
+  }
 
   const onSignUpPressed = () => {
     console.warn("Sign up!")
@@ -19,9 +29,11 @@ const SignInScreen = () => {
 
   const onSignInPressed = (data) => {
     console.log(data);
+    console.log(data.email)
+    console.log(data.password)
     console.warn("Sign in")
     //validate
-
+    onHandleSignIn(data.email, data.password)
     // navigation.navigate('SignIn')  || PŘEJDE DO APLIKACE
   }
 
