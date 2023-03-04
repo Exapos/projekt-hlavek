@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import CustomInput from '../../components/CustomInput/CustomInput'
 import React, { useState } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import firebase from '../../Firebase/firebase';
 
 
@@ -15,20 +15,33 @@ const SignUpScreen = () => {
 
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const pwd = watch('password');
-  const navigation = useNavigation(); 
-  
-  const onHandleSignIn = (email, password) => {
+  const navigation = useNavigation();
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const onHandleSignUp = async (email, password) => {
     createUserWithEmailAndPassword(auth, email, password)
-    .then(()=> console.log("SignUp succes"))
-    .catch((err)=> Alert.alert("Login error", err.message));
-  }
-  
-    
+      .then((userCredentials) => {
+        sendEmailVerification(auth.currentUser)
+          .then(() => {
+            console.info("Email byl poslán")
+          })
+        console.info("Uživatel byl vytvořen")
+        const user = userCredentials.user;
+        console.log(user)
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      })
+  };
+
+
+
   const onRegisteredPressed = (data) => {
     console.warn(data)
     console.warn("Register")
     //Logika backendu
-    onHandleSignIn(data.email, data.password)
+    onHandleSignUp(data.email, data.password)
     navigation.navigate('ConfirmEmail')
   }
 
@@ -36,7 +49,7 @@ const SignUpScreen = () => {
     console.warn("Sign in")
     navigation.navigate('SignIn')
   }
-  
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
