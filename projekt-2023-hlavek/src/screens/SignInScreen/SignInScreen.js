@@ -2,25 +2,33 @@ import { View, Text, useWindowDimensions, StyleSheet, ScrollView } from 'react-n
 import CustomInput from '../../components/CustomInput/CustomInput'
 import React, {useState} from 'react'
 import  CustomButton  from "../../components/CustomButton/CustomButton";
+import {useNavigation} from '@react-navigation/native'
 
 const SignInScreen = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');  
   
+  const {height} = useWindowDimensions();
+  const navigation = useNavigation();
+  
+  
   const onSignUpPressed = () => {
-  console.warn("Sign up!")
+    console.warn("Sign up!")
+    navigation.navigate('SignUp')
   }
   
   const onSignInPressed = () => {
-  console.warn("Sign in")
+    console.warn("Sign in")
+    //validate
+    
+    // navigation.navigate('SignIn')  || PŘEJDE DO APLIKACE
   }
   
   const onForgotPasswordPressed = () => {
-  console.warn("Forgot password")
+    console.warn("Forgot password")
+    navigation.navigate("ForgotPassword")
   }
-  
-  const {height} = useWindowDimensions();
   
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

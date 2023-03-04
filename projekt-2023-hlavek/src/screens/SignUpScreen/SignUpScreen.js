@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import CustomInput from '../../components/CustomInput/CustomInput'
 import React, {useState} from 'react'
 import  CustomButton  from "../../components/CustomButton/CustomButton";
+import {useNavigation} from '@react-navigation/native'
+
 
 const SignUpScreen = () => {
 
@@ -10,20 +12,18 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');  
   const [passwordRepeat, setPasswordReapeat] = useState('');  
   
+  const navigation = useNavigation();
+  
+  
   const onSignInPressed = () => {
     console.warn("Sign in")
-  }
-  
-  const onSignUpPressed = () => {
-  console.warn("Sign up!")
+    navigation.navigate('SignIn')
   }
   
   const onRegisteredPressed = () => {
-  console.warn("Sign in")
-  }
-  
-  const onForgotPasswordPressed = () => {
-  console.warn("Forgot password")
+  console.warn("Register")
+    //Logika backendu
+    navigation.navigate('ConfirmEmail')
   }
     
   return (

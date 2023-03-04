@@ -18,29 +18,23 @@
 *  - App on one view you shoul present records from local database 
 */
 
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import SignInScreen from './src/screens/SignInScreen/SignInScreen';
-import SignUpScreen from './src/screens/SignUpScreen/SignUpScreen';
-import ConfirmEmailScreen from './src/screens/ConfirmEmailScreen/ConfirmEmailScreen';
-
+import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import Navigation from './src/navigation';
+import React from 'react';
 
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <ConfirmEmailScreen />
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.root}>
+      <Navigation />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#4A463F' 
+    backgroundColor: "rgba(74,70,63)",
   },
 });
+

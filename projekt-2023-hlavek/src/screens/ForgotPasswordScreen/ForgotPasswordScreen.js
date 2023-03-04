@@ -5,53 +5,42 @@ import  CustomButton  from "../../components/CustomButton/CustomButton";
 import {useNavigation} from '@react-navigation/native'
 
 
-const ConfirmEmailScreen = () => {
+const ForgotPasswordScreen = () => {
 
-  const [code, setCode] = useState('');
-  
+  const [email, setEmail] = useState('');
   const navigation = useNavigation();
-  
 
   
   const onSignInPressed = () => {
     console.warn("Sign in")
-    navigation.navigate('SignIn')
+    navigation.navigate("SignIn")
+    
   }
   
-  const onConfirmPressed = () => {
-    console.warn("On CONFIRM pressed!")
-    navigation.navigate('SignIn') //MUSÍ SE DODĚLAT
-  }
-  
-  const onResendPressed = () => {
-    console.warn("On resend pressed!")
+  const onSendPressed = () => {
+    console.warn("On confrimg pressed!")
+    navigation.navigate("NewPassword")
   }
 
     
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
-        <Text style={[styles.title]}>Opravdu existuješ?</Text>
+        <Text style={[styles.title]}>Restartuj si své heslo!</Text>
         
         <CustomInput
-          placeholder="Zadej ověřovací kód"
-          value={code}
-          setValue={setCode}
+          placeholder="Email"
+          value={email}
+          setValue={setEmail}
         />
      
         <CustomButton 
           text="Potvrdit"
-          onPress={onConfirmPressed}
-        />
-        
-        <CustomButton 
-          text="Pošlu ti znova kód!"
-          onPress={onResendPressed}
-          type="SECONDARY"
+          onPress={onSendPressed}
         />
               
         <CustomButton 
-          text="Zpět do přihlašen!"
+          text="Zpět do přihlašení!"
           onPress={onSignInPressed}
           type="TERTIARY"
         />
@@ -83,4 +72,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default ConfirmEmailScreen
+export default ForgotPasswordScreen
