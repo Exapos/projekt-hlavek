@@ -15,27 +15,27 @@ const Stack = createNativeStackNavigator();
 
 
 const Navigation = () => {
-return (
+  return (
     <NavigationContainer theme={navTheme}>
-        <Stack.Navigator screenOptions={{headerShown: false}} >
-            <Stack.Screen name='SignIn' component={SignInScreen} />
-            <Stack.Screen name='SignUp' component={SignUpScreen} />         
-            <Stack.Screen name='ConfirmEmail' component={ConfirmEmailScreen} />
-            <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
-            <Stack.Screen name='NewPassword' component={NewPasswordScreen} />
-        </Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }} >
+        <Stack.Screen name='SignIn' component={SignInScreen} />
+        <Stack.Screen name='SignUp' component={SignUpScreen} />
+        <Stack.Screen name='ConfirmEmail' component={ConfirmEmailScreen} />
+        <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
+        <Stack.Screen name='NewPassword' component={NewPasswordScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
-)
-}
+  );
+};
 
 
 const navTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: '#4A463F',
-    },
-  };
-  
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#4A463F',
+  },
+};
+
 export default Navigation;
 

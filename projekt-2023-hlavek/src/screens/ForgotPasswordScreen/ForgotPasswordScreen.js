@@ -3,40 +3,47 @@ import CustomInput from '../../components/CustomInput/CustomInput'
 import React, {useState} from 'react'
 import  CustomButton  from "../../components/CustomButton/CustomButton";
 import {useNavigation} from '@react-navigation/native'
+import { useForm, Controller } from 'react-hook-form'
 
 
 const ForgotPasswordScreen = () => {
 
-  const [email, setEmail] = useState('');
+  const { control, handleSubmit, formState: { errors } } = useForm();
   const navigation = useNavigation();
 
-  
   const onSignInPressed = () => {
     console.warn("Sign in")
-    navigation.navigate("SignIn")
+    navigation.navigate('SignIn');
     
   }
   
-  const onSendPressed = () => {
-    console.warn("On confrimg pressed!")
-    navigation.navigate("NewPassword")
+  const onSendPressed = (data) => {
+    console.warn(data);
+    console.warn("On confrimg pressed!");
+    navigation.navigate('NewPassword');
   }
-
-    
+   
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
         <Text style={[styles.title]}>Restartuj si své heslo!</Text>
         
         <CustomInput
-          placeholder="Email"
-          value={email}
-          setValue={setEmail}
+          name="email"
+          placeholder="E-mail"
+          control={control}
+          rules={{
+            required: 'E-mail je potřeba! Nezapoměn na něj',
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: 'Zadejte platný email',
+            },
+          }}
         />
      
         <CustomButton 
-          text="Potvrdit"
-          onPress={onSendPressed}
+          text="Poslat"
+          onPress={handleSubmit(onSendPressed)}
         />
               
         <CustomButton 
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
       fontWeight: 'medium',
       textAlign: 'center',
       color: "white",
-      marginTop: 100
+      marginTop: 25
     },
     
 });
