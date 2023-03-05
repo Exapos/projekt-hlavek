@@ -1,52 +1,60 @@
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
-import { useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { useEffect, useState } from "react";
 import CustomInput from '../../components/CustomInput/CustomInput'
-import React, { useState } from 'react'
+import React from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
-import { getAuth, sendEmailVerification } from "firebase/auth";
+import { getAuth, sendEmailVerification, onIdTokenChanged } from "firebase/auth";
 import firebase from '../../Firebase/firebase';
 
 const ConfirmEmailScreen = () => {
   const [showText, setShowText] = useState(false);
 
   const auth = getAuth();
-  var user = auth.currentUser;
   const navigation = useNavigation();
 
+  // Set up the onIdTokenChanged listener
+  useEffect(() => {
+    const unsubscribe = onIdTokenChanged(auth, async (user) => {
+      if (user) {
+        // Refresh the user token
+        const token = await user.getIdToken();
+        // Do something with the new token, such as updating the UI
+        console.group("USER-TOKEN:")
+        console.info(`First 16: ${token.substring(0,16)}`);
+        console.info(`Last 16: ${token.slice(-16)}`);
+        console.groupEnd()        
+      }
+    });
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
   const helper = async () => {
-    await user?.reload();
-    user = await auth.currentUser;
-
-    console.log(user)
-    if (user !== null) {
-      user.providerData.forEach((profile) => {
-        console.log("Sign-in provider: " + profile.providerId);
-        console.log("  Provider-specific UID: " + profile.uid);
-        console.log("  Name: " + profile.displayName);
-        console.log("  Email: " + profile.email);
-        console.log("  Photo URL: " + profile.photoURL);
-        console.log("  Verified: " + user.emailVerified)
-
-        if (user.emailVerified) {
-          console.log("Vyborně jsi ověřený teď te teleport odnese zpět")
-          navigation.navigate('SignIn')
+    const user = auth.currentUser;
+    if (user) {
+      await user.reload();
+      console.group('Uživatel');
+      console.info("Username: " + auth.currentUser.displayName);
+      console.info("E-mail: " + auth.currentUser.email);
+      console.info("Je učet verified?: " + auth.currentUser.emailVerified);
+      console.info("UID uživatele: " + auth.currentUser.uid);    
+      console.groupEnd();
+      if (user.emailVerified) {
+        console.info("Vyborně jsi ověřený teď te teleport odnese zpět")
+        navigation.navigate('SignIn')
         setShowText(false);
-          
-        } else {
+      } else {
         setShowText(true);       
-          console.log("Stále nejsi ověřený, pokuď ti nepřišel e-mail klikni na Resend")
-        }
-        console.warn("On CONFIRM pressed!")
-      })
+        console.error("Stále nejsi ověřený, pokuď ti nepřišel e-mail klikni na Resend")
+      }
     }
   }
 
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
 
   const handleConfirm = () => {
-
     navigation.navigate('SignIn')
   }
 
@@ -62,10 +70,15 @@ const ConfirmEmailScreen = () => {
 
   const onResendPressed = () => {
     console.warn("On resend pressed!")
-    console.log(auth.currentUser)
+    console.group('Uživatel stiskl resend emailu:');
+    console.info("Username: " + auth.currentUser.displayName);
+    console.info("E-mail: " + auth.currentUser.email);
+    console.info("Je učet verified?: " + auth.currentUser.emailVerified);
+    console.info("UID uživatele: " + auth.currentUser.uid);    
+    console.groupEnd();
     sendEmailVerification(auth.currentUser)
       .then(() => {
-        console.info("Email byl poslán")
+        console.warn("Email byl poslán")
       }).catch((err)=>(console.log(err)))
   }
 

@@ -17,11 +17,11 @@ const ForgotPasswordScreen = () => {
   const changePassword = (email) => {
     sendPasswordResetEmail(auth, email)
     .then(()=> {
-      console.log("Email has been sent to reset")
+      console.warn("Email has been sent to reset")
       setShowText(false);
       setShowText2(true); 
     }).catch((error) => {
-      console.log(error)
+      console.error(error)
       setShowText(true);
       setShowText2(false);  
     })

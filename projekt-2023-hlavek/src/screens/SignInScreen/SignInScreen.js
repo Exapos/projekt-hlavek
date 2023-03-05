@@ -12,8 +12,7 @@ const auth = getAuth();
 const SignInScreen = () => {
   const [showText, setShowText] = useState(false);
   const [showText2, setShowText2] = useState(false);
-  
-  const [currentUser, setCurrentUser] = useState(null);
+  const [displayName, setDisplayName] = useState('neznámý uživateli');
 
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
@@ -23,9 +22,14 @@ const SignInScreen = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      if(user) {
+        setDisplayName(user.displayName);
+      }
     });
     return unsubscribe;
   }, []);
+
+  const [currentUser, setCurrentUser] = useState(null);
 
   const onHandleSignIn = async (email, password) => {  
     if (currentUser && !currentUser.emailVerified) {
@@ -62,9 +66,9 @@ const SignInScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
-        <Text style={[styles.banner, { height: height * 0.2 }]}>Vítej neznámý uživateli!</Text>
+        <Text style={[styles.banner, { height: height * 0.2 }]}>Vítej {displayName}!</Text>
         {showText && <Text style={styles.err}>Neplatné přihlašovací údaje. Zkuste to prosím znovu.</Text>}
-        {showText2 && <Text style={styles.err}>Učet nebyl ověřený, ověř si učet a přihlaš se! :)</Text>}
+        {showText2 && <Text style={styles.err}>Učet nebyl ověřený nebo vytvořený, ověř si učet a přihlaš se a nebo se registruj! :)</Text>}
         
         <CustomInput
           name="email"

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import firebase from '../../Firebase/firebase';
 
 
@@ -19,17 +19,29 @@ const SignUpScreen = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const onHandleSignUp = async (email, password) => {
+  const onHandleSignUp = async (email, password, username) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         sendEmailVerification(auth.currentUser)
           .then(() => {
-            console.info("Email byl poslán")
+            updateProfile(auth.currentUser, {
+            displayName: username
+            }).then(()=> {
+              console.group('Uživatel');
+              console.info("Uživatel má display name");
+              console.info("Username: " + username);
+              console.info("E-mail: " + email);
+              console.info("Heslo: " + password);  
+              console.info("Je učet verified?: " + auth.currentUser.emailVerified);
+              console.info("UID uživatele: " + auth.currentUser.uid);    
+              console.groupEnd();
+            }).catch((error)=> {
+            console.error(error)
+            })
+            console.warn("Email byl poslán")
           })
-        console.info("Uživatel byl vytvořen")
-        const user = userCredentials.user;
-        console.log(user)
-      }).catch((error) => {
+        console.warn("Uživatel byl vytvořen")
+        }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
       })
@@ -38,10 +50,12 @@ const SignUpScreen = () => {
 
 
   const onRegisteredPressed = (data) => {
-    console.warn(data)
-    console.warn("Register")
+    console.group('registrace-data')
+    console.info(data)
+    console.info("Register")
+    console.groupEnd()
     //Logika backendu
-    onHandleSignUp(data.email, data.password)
+    onHandleSignUp(data.email, data.password, data.username)
     navigation.navigate('ConfirmEmail')
   }
 
@@ -63,10 +77,11 @@ const SignUpScreen = () => {
             required: 'Vyplňte prosím uživatelské jméno',
             pattern: {
               value: /^[a-zA-Z0-9_-]{3,16}$/,
+
               message: 'Uživatelské jméno může obsahovat pouze písmena, číslice, pomlčky a podtržítka. Musí mít 3 až 16 znaků.',
             },
           }}
-        />
+          />
 
 
         <CustomInput
