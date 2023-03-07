@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
       color: '#BB5E96',
   },
     text_TERTIARY: {
-        color: 'grey',
+        color: 'dark-grey',
         fontSize: 20,
     },
 })
