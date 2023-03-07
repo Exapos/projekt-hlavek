@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native'
 import CustomInput from '../../components/CustomInput/CustomInput'
 import React, { useState } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
@@ -129,8 +129,7 @@ const SignUpScreen = () => {
           onPress={handleSubmit(onRegisteredPressed)}
         />
 
-        <Text style={styles.text}>Zaregistovaním, souhlasíš s našimi <Text style={styles.link}>podmínkami</Text>, které <Text style={styles.link}>nejsou</Text> nikde k nalezení.</Text>
-
+        <Text style={styles.text}>Zaregistovaním, souhlasíš s našimi <Text style={styles.link} onPress = {() => {Linking.openURL('https://youtu.be/eSkK2kqU3JM')}}>podmínkami</Text>, které <Text style={styles.link} onPress = {() => {Linking.openURL('https://youtu.be/eSkK2kqU3JM')}}>nejsou</Text> nikde k nalezení.</Text>
         <CustomButton
           text="Máš účet? Přihlaš se"
           onPress={onSignInPressed}

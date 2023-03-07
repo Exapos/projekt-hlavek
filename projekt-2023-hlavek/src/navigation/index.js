@@ -4,6 +4,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from '../screens/SignInScreen/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen/SignUpScreen';
+import ToDo from '../screens/ToDo/ToDo';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen/ConfirmEmailScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import backgroundImage from '../../assets/Nepojmenovana.jpg';
@@ -20,6 +21,8 @@ const Navigation = () => {
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='ConfirmEmail' component={ConfirmEmailScreen} />
             <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
+            <Stack.Screen name='ToDo' component={ToDo} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </ImageBackground>
