@@ -8,6 +8,8 @@ import firebase from '../../Firebase/firebase';
 import ToDo from '../ToDo/ToDo';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
+//Tohle je změna :)
+
 const auth = getAuth();
 
 const SignInScreen = () => {
