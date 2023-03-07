@@ -5,6 +5,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
 import firebase from '../../Firebase/firebase';
+import ToDo from '../ToDo/ToDo';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const auth = getAuth();
@@ -23,7 +24,8 @@ const SignInScreen = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       if(user) {
-        setDisplayName(user.displayName);
+        console.log(user.displayName);
+        navigation.navigate("ToDo")
       }
     });
     return unsubscribe;
@@ -33,7 +35,7 @@ const SignInScreen = () => {
 
   const onHandleSignIn = async (email, password) => {  
     if (currentUser && !currentUser.emailVerified) {
-      console.log("Nejsi verified")
+      console.log("Not verified")
       setShowText2(true);        
       return;
     }
