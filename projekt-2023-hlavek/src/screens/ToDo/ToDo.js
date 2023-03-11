@@ -5,11 +5,12 @@ import React, { useState } from 'react';
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
-import {  getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile, emailVerified, currentUser, userId } from "firebase/auth";
-import firebase from '../../Firebase/firebase';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile, emailVerified, currentUser, userId, signOut } from "firebase/auth";
 import AddToDoModal from '../../components/AddToDoModal/AddToDoModal'
 import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 const auth = getAuth();
 const db = getFirestore();
@@ -33,8 +34,8 @@ const ToDo = ({navigation}) => {
 
         setToDos(toDos);
         setIsLoading(false);
-        setIsRefreshing(false);
     };
+
 
     if (isLoading){
         loadToDoList();
@@ -59,17 +60,19 @@ const ToDo = ({navigation}) => {
     let ToDoItem = ({item}) =>{
         return (
             <View style ={styles.Container}>
-                <BouncyCheckbox
+                <BouncyCheckbox 
                     isChecked={item.completed}
-                    size={25}
-                    fillColor="purple"
+                    size={20}
+                    fillColor="#652C47"
                     unfillColor="#FFFFFF"
                     text={item.text}
                     iconStyle={{ borderColor: "purple" }}
+                    textStyle={{ color: "black" }}
                     onPress={(isChecked) => {checkToDoItem(item, isChecked)}}
-                    />
-                    <View>
-                        <InlineTextButton text="Smazat" color="red" onPress={() => deleteToDo(item.id)} />
+                />
+                    <View style={styles.buttonDelete}>
+                        <InlineTextButton text="Smazat" 
+                        onPress={() => deleteToDo(item.id)} />
                     </View>
             </View>
         );
@@ -80,7 +83,8 @@ const ToDo = ({navigation}) => {
             <FlatList
             data={toDos}
             renderItem={ToDoItem}
-            keyExtractor={item => item.id} />
+            keyExtractor={item => item.id} 
+            />
         )
     };
 
@@ -121,9 +125,17 @@ const ToDo = ({navigation}) => {
                     />
                 </View>
             </Modal>
-            <Text>ToDo</Text>
-            <Button title="Přidat záležitosti" onPress={showContent}/>
-            {isLoading ? <ActivityIndicator size="large"/> : <>{showToDoList()}</>}
+            <MaterialIcons name="logout" size={32} color="#652C47" style={{marginLeft: "auto"}} onPress={logout}/>
+
+            <Text style= {styles.Border}>ToDo </Text>
+            {isLoading ? <ActivityIndicator size="large" /> : <>{showToDoList()}</>}
+
+            <View style= {{position: "absolute", marginTop: 800, alignSelf: 'center'}}>
+                <CustomButton
+                text="+ Přidat záležitosti"
+                onPress={showContent}
+                />
+            </View>
         </SafeAreaView>
     )
 }
@@ -136,8 +148,28 @@ const ToDo = ({navigation}) => {
       justifyContent: 'center',
     },
     Container:{
+        marginbottom: 20,
+        flexDirection: 'row'
 
+    },
+    Border:{
+        fontSize: 30,
+        textAlign: 'center',
+        alignSelf: 'center',
+        flex: 0.3,
+        backgroundColor: '#347757',
+        borderWidth: 3,
+        marginVertical: 10,
+        width: 350,
+        height: 70,
+    },
+    buttonDelete:{
+        justifyContent: 'flex-end',
+        fontSize: 30,
+        size: 30,
+        marginLeft: "auto"
     }
+
   });
 
   export default ToDo

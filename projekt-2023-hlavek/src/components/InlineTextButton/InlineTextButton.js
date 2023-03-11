@@ -1,4 +1,5 @@
-import { Text, Pressable } from 'react-native';
+import { Pressable,View, Text, StyleSheet, ScrollView, Linking, Modal, SafeAreaView, ActivityIndicator, FlatList } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function InlineTextButton(props) {
   let style = {};
@@ -8,10 +9,8 @@ export default function InlineTextButton(props) {
   return (
     <Pressable onPress={props.onPress}>
       {({ pressed }) => (
-        <Text>
-            {props.text}
-        </Text>
+        <MaterialIcons name="delete-outline" size={30} color="#652C47" />
       )}
     </Pressable>
   )
-}
+};

@@ -109,13 +109,15 @@ const SignInScreen = () => {
           text="Zapomněl si heslo?"
           onPress={onForgotPasswordPressed}
           type="TERTIARY"
+          
         />
-
-        <CustomButton
-          text="Nemáš účet? Zaregistruj se"
-          onPress={onSignUpPressed}
-          type="TERTIARY"
-        />
+        <View style= {{marginTop: -40}}>
+          <CustomButton
+            text="Nemáš účet? Zaregistruj se."
+            onPress={onSignUpPressed}
+            type="TERTIARY"
+          />
+        </View>
       </View>
     </ScrollView>
   )
