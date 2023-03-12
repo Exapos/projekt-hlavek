@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
-import firebase from '../../Firebase/firebase';
 import ToDo from '../ToDo/ToDo';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import firebase from "../../Firebase/Firebase"
+
 
 //Tohle je změna :)
 
@@ -27,7 +28,7 @@ const SignInScreen = () => {
       setCurrentUser(user);
       if(user) {
         console.log(user.displayName);
-        navigation.navigate("ToDo")
+        setDisplayName(user.displayName)
       }
     });
     return unsubscribe;
@@ -47,6 +48,7 @@ const SignInScreen = () => {
       console.log("Login success");
       setShowText(false)
       setShowText2(false);
+      navigation.navigate("ToDo")
     } catch (err) {
       console.log(err);
       setShowText(true);
@@ -111,13 +113,15 @@ const SignInScreen = () => {
           text="Zapomněl si heslo?"
           onPress={onForgotPasswordPressed}
           type="TERTIARY"
+          
         />
-
-        <CustomButton
-          text="Nemáš účet? Zaregistruj se"
-          onPress={onSignUpPressed}
-          type="TERTIARY"
-        />
+        <View style= {{marginTop: -40}}>
+          <CustomButton
+            text="Nemáš účet? Zaregistruj se."
+            onPress={onSignUpPressed}
+            type="TERTIARY"
+          />
+        </View>
       </View>
     </ScrollView>
   )
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
   },
   err:{
     fontSize: 24,
-    color: "red",
+    color: "#652C47",
     textAlign: 'center',   
   },
 });

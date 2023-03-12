@@ -22,6 +22,7 @@ import { StyleSheet, Text, SafeAreaView } from 'react-native';
 import Navigation from './src/navigation';
 import React from 'react';
 import { initializeApp } from 'firebase/app';
+import ToDo from './src/screens/ToDo';
 
 
 

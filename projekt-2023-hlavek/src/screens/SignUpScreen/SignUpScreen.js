@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native'
 import CustomInput from '../../components/CustomInput/CustomInput'
 import React, { useState } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
-import firebase from '../../Firebase/firebase';
+import firebase from '../../Firebase/Firebase';
 
 
 const auth = getAuth();
@@ -129,8 +129,7 @@ const SignUpScreen = () => {
           onPress={handleSubmit(onRegisteredPressed)}
         />
 
-        <Text style={styles.text}>Zaregistovaním, souhlasíš s našimi <Text style={styles.link}>podmínkami</Text>, které <Text style={styles.link}>nejsou</Text> nikde k nalezení.</Text>
-
+        <Text style={styles.text}>Zaregistovaním, souhlasíš s našimi <Text style={styles.link} onPress = {() => {Linking.openURL('https://youtu.be/eSkK2kqU3JM')}}>podmínkami</Text>, které <Text style={styles.link} onPress = {() => {Linking.openURL('https://youtu.be/eSkK2kqU3JM')}}>nejsou</Text> nikde k nalezení.</Text>
         <CustomButton
           text="Máš účet? Přihlaš se"
           onPress={onSignInPressed}
