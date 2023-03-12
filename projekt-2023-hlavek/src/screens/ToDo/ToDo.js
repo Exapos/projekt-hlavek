@@ -1,8 +1,11 @@
-import { Button,View, Text, StyleSheet, Modal, SafeAreaView, ActivityIndicator, FlatList } from 'react-native';
+import { Button,View, Text, StyleSheet, ScrollView, Linking, Modal, SafeAreaView, ActivityIndicator, FlatList, Dimensions } from 'react-native';
 import InlineTextButton from '../../components/InlineTextButton';
-import React, { useState } from 'react';
-import {  getAuth} from "firebase/auth";
-import firebase from '../../Firebase/firebase';
+import CustomInput from '../../components/CustomInput/CustomInput';
+import React, { useState, useEffect } from 'react';
+import CustomButton from "../../components/CustomButton/CustomButton";
+import { useNavigation } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import AddToDoModal from '../../components/AddToDoModal/AddToDoModal'
 import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -12,11 +15,27 @@ import { MaterialIcons } from '@expo/vector-icons';
 const auth = getAuth();
 const db = getFirestore();
 
+const windowHeight = Dimensions.get('window').height;
 
-const ToDo = ({navigation}) => {
+const ToDo = ({ navigation }) => {
     let [modalVisible, setModalVisible] = React.useState(false);
     let [isLoading, setIsLoading] = React.useState(true);
     let [toDos, setToDos] = React.useState([]);
+    const [displayName, setDisplayName] = useState('neznámý uživateli');
+    const [currentUser, setCurrentUser] = useState(null);
+    
+    
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          setCurrentUser(user);
+          if(user) {
+            console.log(user.displayName);
+            setDisplayName(user.displayName)
+          }
+        });
+        return unsubscribe;
+      }, []);
 
     let loadToDoList = async () => {
         const q = query(collection(db, "todos"), where("userId", "==", auth.currentUser.uid));
@@ -34,7 +53,7 @@ const ToDo = ({navigation}) => {
     };
 
 
-    if (isLoading){
+    if (isLoading) {
         loadToDoList();
     }
 
@@ -44,27 +63,23 @@ const ToDo = ({navigation}) => {
         });
     };
 
-    let checkToDoItem = (item, isChecked) => {
-
-    };
-
     let deleteToDo = async (toDoId) => {
         await deleteDoc(doc(db, "todos", toDoId));
         let updatedToDos = [...toDos].filter((item) => item.id != toDoId)
         setToDos(updatedToDos);
     };
 
-    let ToDoItem = ({item}) =>{
+    let ToDoItem = ({ item }) => {
         return (
             <View style ={styles.Container}>
                 <BouncyCheckbox 
                     isChecked={item.completed}
-                    size={20}
+                    size={30}
                     fillColor="#652C47"
                     unfillColor="#FFFFFF"
                     text={item.text}
                     iconStyle={{ borderColor: "purple" }}
-                    textStyle={{ color: "black" }}
+                    textStyle={{ color: "white", fontSize: 22 }}
                     onPress={(isChecked) => {checkToDoItem(item, isChecked)}}
                 />
                     <View style={styles.buttonDelete}>
@@ -76,11 +91,11 @@ const ToDo = ({navigation}) => {
     };
 
     let showToDoList = () => {
-        return(
+        return (
             <FlatList
-            data={toDos}
-            renderItem={ToDoItem}
-            keyExtractor={item => item.id} 
+                data={toDos}
+                renderItem={ToDoItem}
+                keyExtractor={item => item.id}
             />
         )
     };
@@ -95,78 +110,82 @@ const ToDo = ({navigation}) => {
             completed: false,
             userId: auth.currentUser.uid,
         };
+        
         const docRef = await addDoc(collection(db, "todos"), toDoToSave);
         {
-        toDoToSave.id = docRef.id;
+            toDoToSave.id = docRef.id;
 
-        let updatedToDos = [...toDos];
-        updatedToDos.push(toDoToSave);
+            let updatedToDos = [...toDos];
+            updatedToDos.push(toDoToSave);
 
-        setToDos(updatedToDos);
+            setToDos(updatedToDos);
         };
         console.log(docRef);
     };
 
     return (
-        <SafeAreaView>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-                >
-                <View style={styles.modalContainer}>
-                    <AddToDoModal
-                    onClose={() => setModalVisible(false)}
-                    addToDo={addToDo}
+        <SafeAreaView style={{ flex: 1, }}>
+            <View style={{ flex: 1 }}>
+                <MaterialIcons name="logout" size={32} color="#652C47" style={{marginLeft: "auto"}} onPress={logout}/>  
+                
+                <Text style={styles.border}>Vítej {displayName} </Text>
+                {isLoading ? <ActivityIndicator size="large" /> : showToDoList()}
+                
+                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 36 }}>
+                    <CustomButton
+                        text="+ Přidat záležitosti"
+                        onPress={showContent}
                     />
                 </View>
-            </Modal>
-            <MaterialIcons name="logout" size={32} color="#652C47" style={{marginLeft: "auto"}} onPress={logout}/>
 
-            <Text style= {styles.Border}>ToDo </Text>
-            {isLoading ? <ActivityIndicator size="large" /> : <>{showToDoList()}</>}
-
-            <View style= {{position: "absolute", marginTop: 800, alignSelf: 'center'}}>
-                <CustomButton
-                text="+ Přidat záležitosti"
-                onPress={showContent}
-                />
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <View style={styles.modalContainer}>
+                        <AddToDoModal onClose={() => setModalVisible(false)} addToDo={addToDo} />
+                    </View>
+                </Modal>
             </View>
         </SafeAreaView>
-    )
-}
 
-  const styles = StyleSheet.create({
+    );
+};
+
+const styles = StyleSheet.create({
     modalContainer: {
-      marginTop: 100,
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+        marginTop: 100,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    Container:{
-        marginbottom: 20,
-        flexDirection: 'row'
-
-    },
-    Border:{
+    Container: {
+        marginTop: 12,
+        flexDirection: 'row',
+        marginLeft: 20,
+        
+        },
+    border: {
         fontSize: 30,
         textAlign: 'center',
         alignSelf: 'center',
-        flex: 0.3,
+        justifyContent: 'center',
+        paddingTop: 10,
         backgroundColor: '#347757',
         borderWidth: 3,
         marginVertical: 10,
         width: 350,
         height: 70,
+        color: "white"
     },
-    buttonDelete:{
+    buttonDelete: {
         justifyContent: 'flex-end',
         fontSize: 30,
         size: 30,
         marginLeft: "auto"
-    }
+    },
+});
 
-  });
-
-  export default ToDo
+export default ToDo;

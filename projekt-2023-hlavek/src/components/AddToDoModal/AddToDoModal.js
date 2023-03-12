@@ -5,12 +5,21 @@ export default function AddToDoModal(props) {
     let [todo, setTodo] = React.useState("");
     return (
         <View>
-            <Text style ={styles.textT}>Přidej úkol</Text>
+            <View style={styles.textT}>
+              <Text style={{ fontSize: 30, textAlign: 'center', alignSelf: 'center', color:"white"}}>Přidej úkol</Text>
+            </View>
+
             <TextInput
-                style={styles.textInput}
-                placeholder='Zadej název...'
-                value={todo}
-                onChangeText={setTodo} />
+              style={{ 
+                fontSize: 20, 
+                color: "white"
+              }}
+              placeholder='Zadej název...'
+              placeholderTextColor='#555655'
+              value={todo}
+              onChangeText={setTodo} 
+            />
+
             <View style={styles.buttonContainer}>
                 <Pressable style={[ styles.addDiscard, {backgroundColor:"#652C47"}]} 
                   onPress={props.onClose}>
@@ -35,19 +44,17 @@ const styles = StyleSheet.create({
       fontSize: 30,
       textAlign: 'center',
       alignSelf: 'center',
+      justifyContent: 'center',
       backgroundColor: '#347757',
       borderWidth: 1,
-      borderRadius: 20,
       marginVertical: 10,
+      borderRadius: 50,
       width: 250,
       height: 50,
     },
-    textInput: {
-        placeholderTextColor: "#555655",
-        fontSize: 20
-    },
     buttonText: {
-      textAlign: 'center'
+      textAlign: 'center',
+      color: "white"
     },
     addDiscard:{
       backgroundColor: '#347757',
@@ -64,5 +71,6 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       padding: 15,
+      
     }
 })

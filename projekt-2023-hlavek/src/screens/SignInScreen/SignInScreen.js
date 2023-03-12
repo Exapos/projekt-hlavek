@@ -25,6 +25,7 @@ const SignInScreen = () => {
       setCurrentUser(user);
       if(user) {
         console.log(user.displayName);
+        setDisplayName(user.displayName)
       }
     });
     return unsubscribe;
