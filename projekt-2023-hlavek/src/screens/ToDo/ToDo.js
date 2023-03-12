@@ -10,6 +10,9 @@ import AddToDoModal from '../../components/AddToDoModal/AddToDoModal'
 import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { MaterialIcons } from '@expo/vector-icons';
+import firebase from "../../Firebase/Firebase"
+
+
 
 
 const auth = getAuth();
@@ -69,7 +72,11 @@ const ToDo = ({ navigation }) => {
         setToDos(updatedToDos);
     };
 
-    let ToDoItem = ({ item }) => {
+    let checkToDoItem = (item, isChecked) => {
+
+    };
+
+    let ToDoItem = ({item}) =>{
         return (
             <View style ={styles.Container}>
                 <BouncyCheckbox 
@@ -78,7 +85,7 @@ const ToDo = ({ navigation }) => {
                     fillColor="#652C47"
                     unfillColor="#FFFFFF"
                     text={item.text}
-                    iconStyle={{ borderColor: "purple" }}
+                    iconStyle={{ borderColor: '#652C47' }}
                     textStyle={{ color: "white", fontSize: 22 }}
                     onPress={(isChecked) => {checkToDoItem(item, isChecked)}}
                 />
@@ -125,15 +132,13 @@ const ToDo = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, }}>
-            <View style={{ flex: 1 }}>
-                <MaterialIcons name="logout" size={32} color="#652C47" style={{marginLeft: "auto"}} onPress={logout}/>  
-                
-                <Text style={styles.border}>Vítej {displayName} </Text>
-                {isLoading ? <ActivityIndicator size="large" /> : showToDoList()}
-                
+            <View style={{ flex: 1, paddingTop: windowHeight * 0.020}}>
+            <MaterialIcons name="logout" size={35} color="#652C47" style={{marginLeft: "auto"}} onPress={logout}/>  
+                <Text style={styles.border}>Vítej {displayName} </Text>          
+                {isLoading ? <ActivityIndicator size="large" /> : showToDoList()}              
                 <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 36 }}>
                     <CustomButton
-                        text="+ Přidat záležitosti"
+                        text="+ Přidat úkol"
                         onPress={showContent}
                     />
                 </View>
@@ -175,10 +180,13 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         backgroundColor: '#347757',
         borderWidth: 3,
+        borderRadius: 10,
         marginVertical: 10,
-        width: 350,
+        width: 330,
         height: 70,
-        color: "white"
+        color: "white",
+        flexDirection: 'row',
+        marginTop: "auto"
     },
     buttonDelete: {
         justifyContent: 'flex-end',

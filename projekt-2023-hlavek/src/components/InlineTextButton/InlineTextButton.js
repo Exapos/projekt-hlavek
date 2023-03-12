@@ -9,7 +9,7 @@ export default function InlineTextButton(props) {
   return (
     <Pressable onPress={props.onPress}>
       {({ pressed }) => (
-        <MaterialIcons name="delete-outline" size={30} color="#652C47" />
+        <MaterialIcons name="delete-outline" size={40} color="#652C47" />
       )}
     </Pressable>
   )

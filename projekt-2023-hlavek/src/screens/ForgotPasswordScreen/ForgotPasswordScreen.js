@@ -5,7 +5,8 @@ import  CustomButton  from "../../components/CustomButton/CustomButton";
 import {useNavigation} from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import firebase from '../../Firebase/firebase';
+import firebase from "../../Firebase/Firebase";
+
 
 const ForgotPasswordScreen = () => {
 
@@ -57,6 +58,7 @@ const ForgotPasswordScreen = () => {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               message: 'Zadejte platný email',
             },
+            
           }}
         />
      
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     },
     err:{
       fontSize: 24,
-      color: "red",
+      color: "#652C47",
       textAlign: 'center',   
     },
     sent:{
