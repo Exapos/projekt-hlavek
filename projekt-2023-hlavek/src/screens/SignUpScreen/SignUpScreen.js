@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import firebase from "../../Firebase/Firebase"
+import firebase from '../../Firebase/Firebase';
 
 
 const auth = getAuth();
