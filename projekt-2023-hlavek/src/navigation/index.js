@@ -22,7 +22,6 @@ const Navigation = () => {
             <Stack.Screen name='ConfirmEmail' component={ConfirmEmailScreen} />
             <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
             <Stack.Screen name='ToDo' component={ToDo} />
-
           </Stack.Navigator>
         </NavigationContainer>
       </ImageBackground>

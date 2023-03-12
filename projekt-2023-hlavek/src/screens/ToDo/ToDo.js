@@ -1,11 +1,8 @@
-import { Button,View, Text, StyleSheet, ScrollView, Linking, Modal, SafeAreaView, ActivityIndicator, FlatList } from 'react-native';
+import { Button,View, Text, StyleSheet, Modal, SafeAreaView, ActivityIndicator, FlatList } from 'react-native';
 import InlineTextButton from '../../components/InlineTextButton';
-import CustomInput from '../../components/CustomInput/CustomInput';
 import React, { useState } from 'react';
-import CustomButton from "../../components/CustomButton/CustomButton";
-import { useNavigation } from '@react-navigation/native';
-import { useForm, Controller } from 'react-hook-form';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile, emailVerified, currentUser, userId, signOut } from "firebase/auth";
+import {  getAuth} from "firebase/auth";
+import firebase from '../../Firebase/firebase';
 import AddToDoModal from '../../components/AddToDoModal/AddToDoModal'
 import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import BouncyCheckbox from "react-native-bouncy-checkbox";

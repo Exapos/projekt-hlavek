@@ -25,7 +25,6 @@ const SignInScreen = () => {
       setCurrentUser(user);
       if(user) {
         console.log(user.displayName);
-        navigation.navigate("ToDo")
       }
     });
     return unsubscribe;
@@ -45,6 +44,7 @@ const SignInScreen = () => {
       console.log("Login success");
       setShowText(false)
       setShowText2(false);
+      navigation.navigate("ToDo")
     } catch (err) {
       console.log(err);
       setShowText(true);
