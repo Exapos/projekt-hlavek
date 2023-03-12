@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
-import firebase from '../../Firebase/Firebase';
 import ToDo from '../ToDo/ToDo';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import firebase from "../../Firebase/Firebase"
