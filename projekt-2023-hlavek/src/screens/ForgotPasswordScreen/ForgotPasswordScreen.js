@@ -5,7 +5,7 @@ import  CustomButton  from "../../components/CustomButton/CustomButton";
 import {useNavigation} from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import firebase from '../../Firebase/firebase';
+import firebase from '../../Firebase/Firebase';
 
 const ForgotPasswordScreen = () => {
 
